@@ -1,0 +1,24 @@
+<h2>Log in</h2>
+
+<form action="/verify_credentials" method = post >
+  
+  <div class="field">
+    <label for="browser_email">Email</label><br />
+    <input type="email" name="input_email" id="browser_email" />
+  </div>
+
+  <div class="field">
+    <label for="browser_password">Password</label><br />
+    <input type="password" name="input_password" id="browser_password" />
+  </div>
+
+  <div class="actions">
+    <input type="submit" name="commit" value="Log in" data-disable-with="Log in" />
+  </div>
+</form>
+
+  <a href="/users/sign_up">Sign up</a><br />
+
+  <a href="/users/password/new">Forgot your password?</a><br />
+
+<hr>

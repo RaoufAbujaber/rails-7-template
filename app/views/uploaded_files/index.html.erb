@@ -1,0 +1,42 @@
+<h1>Uploaded Files</h1>
+
+<table border="1">
+  <tr>
+    <th>Title</th>
+    <th>Owner</th>
+    <th>Department</th>
+    <th>Course</th>
+    <th>Uploaded</th>
+    <th></th>
+  </tr>
+
+  <% @uploaded_files.each do |uploaded_file| %>
+    <tr>
+      <td>
+        <%= link_to uploaded_file.filename, "/uploads/#{uploaded_file.filename}", target: '_blank' %>
+      </td>
+
+      <td>
+        <%= uploaded_file.username %>
+      </td>
+
+      <td>
+        <%= Department.find_by(id: uploaded_file.course.department_id).name %>
+      </td>
+
+      <td>
+        <%= uploaded_file.course.title %>
+      </td>
+
+      <td>
+        <%= uploaded_file.created_at.strftime("%Y-%m-%d %H:%M") %> <!-- Format the time as you prefer -->
+      </td>
+
+      <td>
+         <a href="/uploaded_files/<%= uploaded_file.id %>">
+            Show details
+          </a>
+      </td>
+    </tr>
+  <% end %>
+</table>

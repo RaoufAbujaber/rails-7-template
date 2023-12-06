@@ -1,0 +1,39 @@
+<h1><%= @uploaded_file.filename %></h1>
+
+<dl>
+  <dt>File</dt>
+  <dd>
+    <%= link_to @uploaded_file.filename, "/uploads/#{@uploaded_file.filename}", target: '_blank' %>
+  </dd>
+
+  <dt>Owner</dt>
+  <dd>
+    <%= @uploaded_file.username %>
+  </dd>
+
+  <dt>Department</dt>
+  <dd>
+    <%= Department.find_by(id: @uploaded_file.course.department_id).name %>
+  </dd>
+
+  <dt>Course</dt>
+  <dd>
+    <%= @uploaded_file.course.title %>
+  </dd>
+
+  <dt>Uploaded</dt>
+  <dd>
+    <%= time_ago_in_words(@uploaded_file.created_at) %> ago
+  </dd>
+
+  <% if session.fetch(:student_id) == Student.find_by(username: @uploaded_file.username).id %>
+    <dt>Delete File</dt>
+    <dd>
+      <a href="/delete_uploaded_file/<%= @uploaded_file.id %>">
+        Delete this file
+      </a>
+    </dd>
+  <% end %>
+</dl>
+
+<!-- Additional sections like comments, if applicable -->

@@ -1,0 +1,57 @@
+<h1>Upload File</h1>
+
+<div id="dropzone" style="border: 2px dashed #ccc; padding: 20px; width: 800px; height: 300px; text-align: center;">
+  Drag and drop files here
+</div>
+
+<div id="preview" style="margin-top: 20px;"></div>
+
+<%= form_tag uploaded_files_path, multipart: true, id: 'file-upload-form', style: 'display: none;' do %>
+  <%= file_field_tag 'uploaded_file', multiple: true, accept: 'image/jpeg,image/gif,image/png,application/pdf', id: 'file-input' %>
+  <%= select_tag :query_course_id, options_from_collection_for_select(Course.all, :id, :title), prompt: 'Select Course' %>
+  <%= submit_tag 'Upload' %>
+<% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var dropzone = document.getElementById('dropzone');
+    var fileInput = document.getElementById('file-input');
+    var form = document.getElementById('file-upload-form');
+    var preview = document.getElementById('preview');
+
+    dropzone.addEventListener('dragover', function (e) {
+      e.preventDefault();
+      // Add styling or effects when dragging over
+    });
+
+    dropzone.addEventListener('drop', function (e) {
+      e.preventDefault();
+      // Get the files from the event
+      var files = e.dataTransfer.files;
+
+      // Update the file input
+      fileInput.files = files;
+
+      // Show the selected files
+      showFiles(files);
+    });
+
+    function showFiles(files) {
+      preview.innerHTML = '';
+      for(var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.maxWidth = '200px';
+          img.style.maxHeight = '200px';
+          img.style.marginRight = '10px';
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+      form.style.display = 'block';
+    }
+  });
+</script>
