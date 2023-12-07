@@ -15,6 +15,7 @@ class Student < ApplicationRecord
   has_many :enrollments, dependent: :destroy
   has_many :uploaded_files
   has_many :own_files, class_name: 'UploadedFile', foreign_key: 'student_id'
+  has_many :likes, foreign_key: 'fan_id'
 
   validates(:username,
     {

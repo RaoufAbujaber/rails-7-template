@@ -2,7 +2,6 @@ Rails.application.routes.draw do
 
   get("/", { :controller => "students", :action => "index" })
 
-
   # Index route for displaying all uploaded files
   get '/uploaded_files' => 'uploaded_files#index', as: :uploaded_files
 
@@ -74,5 +73,11 @@ Rails.application.routes.draw do
   # DELETE
 
   get("/delete_comment/:the_comment_id", { :controller => "comments", :action => "destroy"})
+  
+  resources :comments, only: [:create]
+
+  resources :likes, only: [:create]
+
+  post("/create_like", { :controller => "likes", :action => "create" })
 
 end

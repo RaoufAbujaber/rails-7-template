@@ -1,33 +1,67 @@
 <h1><%= @uploaded_file.filename %></h1>
 
 <dl>
-  <dt>File</dt>
+  <h3>File</h3>
   <dd>
     <%= link_to @uploaded_file.filename, "/uploads/#{@uploaded_file.filename}", target: '_blank' %>
   </dd>
 
-  <dt>Owner</dt>
+  <h3>Owner</h3>
   <dd>
     <%= @uploaded_file.username %>
   </dd>
 
-  <dt>Department</dt>
+  <h3>Department</h3>
   <dd>
     <%= Department.find_by(id: @uploaded_file.course.department_id).name %>
   </dd>
 
-  <dt>Course</dt>
+  <h3>Course</h3>
   <dd>
     <%= @uploaded_file.course.title %>
   </dd>
 
-  <dt>Uploaded</dt>
+  <h3>Uploaded</h3>
   <dd>
     <%= time_ago_in_words(@uploaded_file.created_at) %> ago
   </dd>
 
+  <hr>
+  <%= button_to 'Like', "/create_like", method: :post, params: { like: { fan_id: session.fetch(:student_id), uploaded_file_id:  @uploaded_file.id } } %>
+  <hr>
+
+  <h3>Add a Comment</h3>
+  <%= form_with(url: comments_path, method: :post) do |form| %>
+    <%= form.fields_for :comment do |comment_fields| %>
+      <%= comment_fields.hidden_field :author_id, value: session.fetch(:student_id) %>
+      <%= comment_fields.hidden_field :uploaded_file_id, value: @uploaded_file.id %>
+      <%= comment_fields.text_area :body %>
+    <% end %>
+    <%= form.submit "Post Comment" %>
+  <% end %>
+
+  <h3>Comments</h3>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Commenter</th>
+        <th>Comment</th>
+        <th>Posted At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @uploaded_file.comments.each do |comment| %>
+        <tr>
+          <td><%= comment.commenter.username %></td>
+          <td><%= comment.body %></td>
+          <td><%= comment.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
   <% if session.fetch(:student_id) == Student.find_by(username: @uploaded_file.username).id %>
-    <dt>Delete File</dt>
+    <h3>Delete File</h3>
     <dd>
       <a href="/delete_uploaded_file/<%= @uploaded_file.id %>">
         Delete this file

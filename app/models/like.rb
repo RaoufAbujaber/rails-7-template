@@ -8,16 +8,10 @@
 #  fan_id           :integer
 #  uploaded_file_id :integer
 #
-
 class Like < ApplicationRecord
-  validates(:fan, { :presence => true })
-  validates(:note, { :presence => true })
+  belongs_to :student, class_name: 'Student', foreign_key: 'fan_id'
+  belongs_to :uploaded_file
 
-  def fan
-    return User.where({ :id => self.fan_id }).at(0)
-  end
-
-  def note
-    return Note.where({ :id => self.note_id }).at(0)
-  end
+  validates :student, presence: true
+  validates :uploaded_file, presence: true
 end

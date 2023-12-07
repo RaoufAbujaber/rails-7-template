@@ -11,14 +11,12 @@
 #
 
 class Comment < ApplicationRecord
-  validates(:commenter, {:presence => true })
-  validates(:uploaded_file, {:presence => true })
+  validates :author_id, presence: true
+  validates :uploaded_file_id, presence: true
+  validates :body, presence: true
 
-  def commenter
-    return User.where({ :id => self.author_id }).at(0)
-  end
+  belongs_to :uploaded_file, class_name: 'UploadedFile', foreign_key: 'uploaded_file_id'
 
-  def uploaded_file
-    return UploadedFile.where({ :id => self.uploaded_file_id }).at(0)
-  end
+  belongs_to :commenter, class_name: 'Student', foreign_key: 'author_id'
+
 end
